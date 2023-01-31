@@ -5,6 +5,8 @@ const app = express()
 const path = require('path');
 const mongoose = require('mongoose')
 const dbConnection = require('./config/dbConnect')
+const {logger} = require('./middleware/logger')
+const {logEvents} = require('./middleware/logger')
 
 //Set port variable
 const PORT = process.env.PORT||3500
@@ -17,14 +19,18 @@ dbConnection()
 //Middleware to allow app to parse json
 app.use(express.json());
 
+//Logger middleware
+app.use(logger)
+
 //Set location of public static assets
 app.use('/', express.static(path.join(__dirname,'public')));
 
 //Set routes 
 app.use("/", require("./routes/root"))
 app.use("/blogs", require("./routes/blogRoutes"))
+app.use("/users", require("./routes/userRoutes"))
 
-/*
+
 //Handle any requests that do not follow any of the previous routes
 app.all('*', (req,res)=>{ 
     res.status(404)
@@ -39,10 +45,16 @@ app.all('*', (req,res)=>{
         res.type('txt').send('404 Not Found')
     }
 })
-*/
+
 
 //Listen on designated port
 mongoose.connection.once('open', ()=>{   //check connection to mongoDB is successful
     console.log("Connected to MongoDB successfully")
     app.listen(PORT, ()=> console.log("Blog server running on port " + PORT))
+})
+
+//Listen for mongoDB errors and then log them using logger function
+mongoose.connection.on('error',err =>{
+    console.log(err);
+    logEvents(`${err.no}:${err.code}\t${err.syscall}\t${err.hostname}`, mongoErrLog.log);
 })
