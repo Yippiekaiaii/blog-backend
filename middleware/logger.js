@@ -7,7 +7,7 @@ const path = require('path');
 //Helper function to create log format
 const logEvents = async(message,logFileName)=>{
     const dateTime = `${format(new Date(), 'dd/MM/yyy\tHH:mm:ss')}`
-    const logItem = `${dateTime}\t id: ${uuid()}\t${message}\n` 
+    const logItem = `${dateTime}\t id:${uuid()}\t${message}\n` 
 
     try {
         if (!fs.existsSync(path.join(__dirname,'..', 'logs'))){ //Checks if log dir exists
@@ -23,6 +23,7 @@ const logEvents = async(message,logFileName)=>{
 const logger = (req,res,next) => {
     logEvents(`${req.method}\t${req.url}\t${req.headers.origin}`, 'reqLog.log') //Calls the above function  \t creates a tab
     console.log(`${req.method} ${req.path}`);
+    
     next();
 }
 

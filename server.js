@@ -7,9 +7,16 @@ const mongoose = require('mongoose')
 const dbConnection = require('./config/dbConnect')
 const {logger} = require('./middleware/logger')
 const {logEvents} = require('./middleware/logger')
+const errorHandler = require('./middleware/errorHandler')
+const cookieParser = require ('cookie-parser')
+const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
 
 //Set port variable
 const PORT = process.env.PORT||3500
+
+//Cors
+app.use(cors(corsOptions))
 
 //Set mongoose strict mode (avoids depreciation error)
 mongoose.set('strictQuery',true)
@@ -18,6 +25,9 @@ dbConnection()
 
 //Middleware to allow app to parse json
 app.use(express.json());
+
+//Cookie Parser
+app.use(cookieParser())
 
 //Logger middleware
 app.use(logger)
@@ -46,6 +56,8 @@ app.all('*', (req,res)=>{
     }
 })
 
+//Error handler middleware
+app.use(errorHandler)
 
 //Listen on designated port
 mongoose.connection.once('open', ()=>{   //check connection to mongoDB is successful
