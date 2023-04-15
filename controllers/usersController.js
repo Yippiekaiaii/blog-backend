@@ -47,9 +47,9 @@ const bcrypt = require('bcrypt')
 
         const updateUser = async (req,res) => {
             const {id,username,password,role,active} = req.body
-
+            console.log(req.body)
             //confirm data
-            if (!id || !username || !role || !active) {
+            if (!id || !username || !role) {
                 return res.status(400).json({message:'All fields are required'})                
             }
 
@@ -87,13 +87,16 @@ const bcrypt = require('bcrypt')
         const deleteUser = async (req,res) => {
             const {id} = req.body
 
+            console.log("id passed to delete", id)
+
             //Confirm request data
             if (!id) {
                 return res.status(400).json({message:'User ID required'})
             }
 
             //Check if user exists
-            const user = await User.findOne({id}).exec()
+            const user = await User.findById(id).exec()
+            console.log("use found", user)
             if (!user) {
                 return res.status(400).json({message: 'User not found'})
             }

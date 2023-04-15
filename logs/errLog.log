@@ -1,2 +1,4 @@
 31/01/2023	17:06:30	 id:efe929b2-a9f6-4b86-9841-07209476d908	ReferenceError:error is not defined	GET	https://www.google.com
 31/01/2023	18:10:11	 id:6a51d84c-86bb-4543-8daf-8ad46a2a3078	Error:Not allowed by CORS	GET	https://www.google.com
+02/04/2023	15:03:37	 id:6ef6092e-164a-455d-855f-c8447e1935ee	CastError:Cast to ObjectId failed for value "{ id: '64298b3587576a1238421679' }" (type Object) at path "_id" for model "User"	DELETE	http://localhost:3000
+02/04/2023	15:12:11	 id:b8f58aa3-b72a-4741-9155-a800228c1a5b	TypeError:User.findOneById is not a function	DELETE	http://localhost:3000
